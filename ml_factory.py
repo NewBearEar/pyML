@@ -9,6 +9,7 @@ import lightgbm as lgbm
 from neupy import utils
 from neupy import algorithms
 from geoidbn.dbn import DBN
+from gtwgrnn.gtwgrnn import GTWGRNN
 
 
 class ModelFactory():
@@ -69,6 +70,9 @@ class ModelFactory():
                                          "momentum": 0,
                                          "alpha": 1}
                                )
+        elif self.model_class_name == 'GTWNNModel':
+            # GTW GRNN模型 参考源码
+            model = GTWGRNN(bandWidth=4,bLambda=3,spread=0.1)
 
         else:
             print('暂不支持该模型')

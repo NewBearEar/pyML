@@ -29,6 +29,9 @@ class MLModel(metaclass=ABCMeta):
         self.dataset = dataset
         self.__data_prepare()
 
+    def fit(self,train_x,train_y):
+        pass
+
     def __data_prepare(self):
         # ipnut : AOD;RH;WS;TEMP;PBL;SP;NDVI;PMs;PMt;1./NearestDis
         # output : PM2.5
@@ -181,7 +184,7 @@ class GRNNModel(MLModel):
         print('time cost:', time_end - time_start, 's')
         return np.array(self.output), self.train_estimated, self.model
 
-    def model__tenFolder(self):    # 覆写父类方法
+    def model_tenFolder(self):    # 覆写父类方法
         time_start = time.time()
         self.__tenFolder('train')
         time_end = time.time()
