@@ -1,7 +1,7 @@
 import numpy as np
 import math
 
-class GTWGRNN():
+class GTWNN():
     def __init__(self,bandWidth=4,bLambda=3,spread=0.1):
         self.bandWidth = bandWidth
         self.bLambda = bLambda * 10e4

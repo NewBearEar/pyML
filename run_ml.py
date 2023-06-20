@@ -4,6 +4,7 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import KFold
 from sklearn.ensemble import AdaBoostRegressor,GradientBoostingRegressor,RandomForestRegressor
 from sklearn.linear_model import LinearRegression
+from sklearn.neural_network import MLPRegressor
 from abc import ABCMeta
 import time
 
@@ -15,6 +16,7 @@ from neupy import algorithms
 from scoring_method import cal_Rsqure,cal_MAE,cal_RMSE,cal_RPE
 #from dbn import SupervisedDBNRegression
 from geoidbn.dbn import DBN
+from gtwgrnn.gtwgrnn import GTWNN
 
 class MLModel(metaclass=ABCMeta):
     def __init__(self):
@@ -197,3 +199,12 @@ class LinearRegressionModel(MLModel):
         super(LinearRegressionModel, self).__init__()
         self.model = model
 
+class GTWNNModel(MLModel):
+    def __init__(self,model:GTWNN):
+        super(GTWNNModel, self).__init__()
+        self.model = model
+
+class BPNNModel(MLModel):
+    def __init__(self,model:MLPRegressor):
+        super(BPNNModel, self).__init__()
+        self.model = model

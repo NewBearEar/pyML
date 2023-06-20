@@ -3,13 +3,15 @@ from sklearn.ensemble import AdaBoostRegressor
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.linear_model import LinearRegression
+from sklearn.neural_network import MLPRegressor
 
 import xgboost as xgb
 import lightgbm as lgbm
 from neupy import utils
 from neupy import algorithms
 from geoidbn.dbn import DBN
-from gtwgrnn.gtwgrnn import GTWGRNN
+from gtwgrnn.gtwgrnn import GTWNN
+
 
 
 class ModelFactory():
@@ -72,7 +74,9 @@ class ModelFactory():
                                )
         elif self.model_class_name == 'GTWNNModel':
             # GTW GRNN模型 参考源码
-            model = GTWGRNN(bandWidth=4,bLambda=3,spread=0.1)
+            model = GTWNN(bandWidth=4,bLambda=3,spread=0.1)
+        elif self.model_class_name == 'BPNNModel':
+            model = MLPRegressor(hidden_layer_sizes=(10,), random_state=10, learning_rate_init=0.1)
 
         else:
             print('暂不支持该模型')
