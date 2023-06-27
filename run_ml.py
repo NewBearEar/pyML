@@ -16,7 +16,10 @@ from neupy import algorithms
 from scoring_method import cal_Rsqure,cal_MAE,cal_RMSE,cal_RPE
 #from dbn import SupervisedDBNRegression
 from geoidbn.dbn import DBN
-from gtwgrnn.gtwgrnn import GTWNN
+from gtwgrnn.gtwgrnn import GTWGRNN
+from georegression.gwr import GWRAdaptor
+from georegression.gtwr import GTWRAdaptor
+from multi_dbn.dbn import MultiTaskDBN
 
 class MLModel(metaclass=ABCMeta):
     def __init__(self):
@@ -199,12 +202,27 @@ class LinearRegressionModel(MLModel):
         super(LinearRegressionModel, self).__init__()
         self.model = model
 
-class GTWNNModel(MLModel):
-    def __init__(self,model:GTWNN):
-        super(GTWNNModel, self).__init__()
+class GTWGRNNModel(MLModel):
+    def __init__(self,model:GTWGRNN):
+        super(GTWGRNNModel, self).__init__()
         self.model = model
 
 class BPNNModel(MLModel):
     def __init__(self,model:MLPRegressor):
         super(BPNNModel, self).__init__()
+        self.model = model
+
+class GWRModel(MLModel):
+    def __init__(self, model: GWRAdaptor):
+        super(GWRModel,self).__init__()
+        self.model = model
+
+class GTWRModel(MLModel):
+    def __init__(self,model: GTWRAdaptor):
+        super(GTWRModel, self).__init__()
+        self.model = model
+
+class MultiTaskDBNModel(MLModel):
+    def __init__(self,model: MultiTaskDBN):
+        super(MultiTaskDBNModel, self).__init__()
         self.model = model

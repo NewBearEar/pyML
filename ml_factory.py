@@ -10,8 +10,10 @@ import lightgbm as lgbm
 from neupy import utils
 from neupy import algorithms
 from geoidbn.dbn import DBN
-from gtwgrnn.gtwgrnn import GTWNN
-
+from gtwgrnn.gtwgrnn import GTWGRNN
+from georegression.gwr import GWRAdaptor
+from georegression.gtwr import GTWRAdaptor
+from multi_dbn.dbn import MultiTaskDBN
 
 
 class ModelFactory():
@@ -19,7 +21,7 @@ class ModelFactory():
         '''
         模型工厂类，用于创建模型类实例对象
         :param model_name: 模型名称，需对应模型类名，暂时包括：RF，AdaBoost，GBDT，XGBoost，LightGBM，GRNN
-                            LinearRegression,DBN
+                            LinearRegression,DBN,GTWGRNN,BPNN,GWR,GTWR,MultiTaskDBN
         '''
         # 输入的模型名称加上Model即为类名
         self.model_class_name = model_name + 'Model'
@@ -72,11 +74,30 @@ class ModelFactory():
                                          "momentum": 0,
                                          "alpha": 1}
                                )
-        elif self.model_class_name == 'GTWNNModel':
-            # GTW GRNN模型 参考源码
-            model = GTWNN(bandWidth=4,bLambda=3,spread=0.1)
+        elif self.model_class_name == 'GTWGRNNModel':
+            # GTWGRNN模型 参考源码
+            model = GTWGRNN(bandWidth=4,bLambda=3,spread=0.1)
         elif self.model_class_name == 'BPNNModel':
             model = MLPRegressor(hidden_layer_sizes=(10,), random_state=10, learning_rate_init=0.1)
+        elif self.model_class_name == 'GWRModel':
+            # GWR
+            model = GWRAdaptor(bandwidth=0.8,kernel='gaussian',fixed=True)
+        elif self.model_class_name == 'GTWRModel':
+            # GTWR
+            model = GTWRAdaptor(bandwidth=0.8,tau=0.1,kernel='gaussian',fixed=True)
+        elif self.model_class_name == 'MultiTaskDBNModel':
+            # 多任务学习
+            batch_size = 64
+            dbnBatchsize = 512
+            use_gpu = False
+            # targetNum = 2,weights=[0.5,0.5] 也可以在fit时重新定义
+            model = MultiTaskDBN(neuralNum=[15, 20, 15],targetNum = 2,weights=[0.5,0.5], learning_rate=0.01, epochs=3000, use_gpu=use_gpu,
+                                     rbm_opts={"numepochs": 50,
+                                               "batchsize": batch_size,
+                                               "dbnBatchsize": dbnBatchsize,
+                                               "momentum": 0,
+                                               "alpha": 1}
+                                     )
 
         else:
             print('暂不支持该模型')
