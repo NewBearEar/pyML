@@ -2,7 +2,8 @@ from georegression.mgtwr.model import GTWR
 from typing import Union
 import numpy as np
 import pandas as pd
-
+import warnings
+warnings.filterwarnings("ignore")
 class GTWRAdaptor():
     def __init__(
             self,

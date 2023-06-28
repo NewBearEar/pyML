@@ -6,6 +6,7 @@ from sklearn.preprocessing import MinMaxScaler,StandardScaler
 import numpy as np
 
 
+
 def testGWRFun():
     data = pd.read_csv(r".\testData\grnn_test_data\data.csv",header=None)
     data = data.to_numpy()
@@ -17,19 +18,10 @@ def testGWRFun():
     scaled_val = scaler.fit_transform(np.array(trainset_val[:,3:-1]))
     trainset_val[:,3:-1] = scaled_val
 
-    dropout = 0
-
-    X = trainset_fit[:, 3:-2]
-    y = trainset_fit[:, -2:]  ### 此时的 y为两个任务的标签值，两列数据
-
-    # 指定权重
-    weight = [ 0.3 for i in range(y.shape[1])]
-
-    fct = ml_factory.ModelFactory('MultiTaskDBN')
+    fct = ml_factory.ModelFactory('GTWR')
     classIns = fct.getModelClassInstance()
-    classIns.model.fit(X, y, weight, dropout=dropout)
-    X_predict = trainset_val[:,3:-2]
-    res = classIns.model.predict(X_predict)
+    classIns.model.fit(trainset_fit[:, :-1], trainset_fit[:, -1])
+    res = classIns.model.predict(trainset_val)
     return res
 
 print(testGWRFun())
