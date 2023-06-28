@@ -24,7 +24,7 @@ class GTWGRNN():
         self.timeLoc_train = X_train[:,0:3]
         self.xset_train = X_train[:,3:]
 
-    def predict(self,X_predict,y_predict_real):
+    def predict(self,X_predict,y_predict_real=None):
         """
             Parameters
             ----------
@@ -33,12 +33,16 @@ class GTWGRNN():
             但必须保证前三个维度为 时间（day of year), 纬度 ，经度
 
             y_real : array-like (n_samples,)
-            待遇测数据的因变量 真实值
+            待遇测数据的因变量 真实值。如果没有真实值标签（在推理时）输入None
             ------
         """
         self.timeLoc_predict = X_predict[:,0:3]
         self.xset_predict = X_predict[:,3:]
-        self.y_predict_real = y_predict_real
+        if y_predict_real:
+            self.y_predict_real = y_predict_real
+        else:
+            y_predict_real = np.zeros(X_predict.shape[0])
+            self.y_predict_real = y_predict_real
         y_predict_estimated = np.empty([y_predict_real.shape[0],1])
 
         for i in range(y_predict_real.shape[0]):

@@ -20,6 +20,7 @@ from gtwgrnn.gtwgrnn import GTWGRNN
 from georegression.gwr import GWRAdaptor
 from georegression.gtwr import GTWRAdaptor
 from multi_dbn.dbn import MultiTaskDBN
+from gc_gtwnn.gc_gtwnn_torch.GTWNN import GCGTWNN
 
 class MLModel(metaclass=ABCMeta):
     def __init__(self):
@@ -225,4 +226,9 @@ class GTWRModel(MLModel):
 class MultiTaskDBNModel(MLModel):
     def __init__(self,model: MultiTaskDBN):
         super(MultiTaskDBNModel, self).__init__()
+        self.model = model
+
+class GCGTWNNModel(MLModel):
+    def __init__(self,model: GCGTWNN):
+        super(GCGTWNNModel, self).__init__()
         self.model = model

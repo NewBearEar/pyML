@@ -14,7 +14,7 @@ from gtwgrnn.gtwgrnn import GTWGRNN
 from georegression.gwr import GWRAdaptor
 from georegression.gtwr import GTWRAdaptor
 from multi_dbn.dbn import MultiTaskDBN
-
+from gc_gtwnn.gc_gtwnn_torch.GTWNN import GCGTWNN
 
 class ModelFactory():
     def __init__(self,model_name:str):
@@ -98,6 +98,9 @@ class ModelFactory():
                                                "momentum": 0,
                                                "alpha": 1}
                                      )
+        elif self.model_class_name == 'GCGTWNNModel':
+            # GC-GTWNN 全局局部地理时空加权模型
+            model = GCGTWNN(bandWidth=4,bLambda=3,neuralNum=[15,15],learning_rate=0.001,gc_epochs=10000,ft_epochs=1000,dropout=0)
 
         else:
             print('暂不支持该模型')
